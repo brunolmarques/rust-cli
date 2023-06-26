@@ -1,8 +1,15 @@
 [package]
-name = "demonr-cli"
+name = "demon-r-cli"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+assert_cmd = "2.0.11"
+clap = "2.34.0"
+predicates = "2"
+anyhow = "1"
+colored = "1"
+phf = { version = "0.11", features = ["macros"] }
+clearscreen = "2.0.1"
