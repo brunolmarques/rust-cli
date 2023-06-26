@@ -4,7 +4,8 @@ use anyhow::anyhow;
 use anyhow::Result;
 use colored::Colorize;
 use crate::models::Action;
-use crate::templates::TEMPLATES_MAP;
+use crate::templates::gen_map;
+
 
 pub trait Page {
     fn draw_page(&self) -> Result<()>;
@@ -64,6 +65,8 @@ impl Page for TemplateSelection {
 
         println!("[p] previous | [c] cancel operation | [:id:] select programming language");
 
+        Ok(())
+
     }
 
     fn handle_input(&self, input: &str) -> Result<Option<Action>> {
@@ -72,8 +75,8 @@ impl Page for TemplateSelection {
             "c" | "C" => Ok(Some(Action::CancelAction)),
             input => {
                 if let Ok(language_id) = input.parse::<u32>() {
-                    if TEMPLATES_MAP.contains_key(&language_id) {
-                        return Ok(Some(Action::NavigateToProgrammingLang { 
+                    if gen_map().contains_key(&language_id) {
+                        return Ok(Some(Action::PickProgrammingLang { 
                             language_id: language_id 
                         }));
                     }
