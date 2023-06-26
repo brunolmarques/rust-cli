@@ -17,7 +17,7 @@ pub struct HomePage {}
 
 impl Page for HomePage {
     fn draw_page(&self) -> Result<()> {
-        let ascii_art = fs::read_to_string("ascii_art.txt").unwrap();
+        let ascii_art = fs::read_to_string("src/ui/pages/ascii_art.txt").unwrap();
         println!("{}", ascii_art.cyan());
 
         println!();
