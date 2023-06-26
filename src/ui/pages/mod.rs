@@ -18,12 +18,24 @@ pub struct HomePage {}
 impl Page for HomePage {
     fn draw_page(&self) -> Result<()> {
         let ascii_art = fs::read_to_string("src/ui/pages/ascii_art.txt").unwrap();
+        let ascii_description = fs::read_to_string("src/ui/pages/ascii_description.txt").unwrap();
+
         println!("{}", ascii_art.cyan());
+        println!("{}", ascii_description.white());
+        println!("Demonware Rust Command Line Tool");
 
         println!();
         println!();
 
-        println!("[q] quit | [c] cancel operation | [:id:] action to execute");
+        println!("-----------------------------------------------------------------------------");
+        println!(" ID |        ACTION       |                     DESCRIPTION                  ");
+        println!(" 1  | Project template    | Create a standard project template from repo.    ");
+        println!(" 2  | Resource deployment | Resources blueprints used for deployment (IaC).  ");
+
+        println!();
+        println!();
+
+        println!("[q] quit | [c] cancel operation | [:id:] choose action");
 
         Ok(())
     }
