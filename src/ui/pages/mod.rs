@@ -1,11 +1,10 @@
-use std::any::Any;
-use std::fs;
+use crate::models::Action;
+use crate::templates::gen_map;
 use anyhow::anyhow;
 use anyhow::Result;
 use colored::Colorize;
-use crate::models::Action;
-use crate::templates::gen_map;
-
+use std::any::Any;
+use std::fs;
 
 pub trait Page {
     fn draw_page(&self) -> Result<()>;
@@ -22,7 +21,6 @@ impl Page for HomePage {
 
         println!("{}", ascii_art.cyan());
         println!("{}", ascii_description.white());
-        println!("Demonware Rust Command Line Tool");
 
         println!();
         println!();
@@ -35,13 +33,12 @@ impl Page for HomePage {
         println!();
         println!();
 
-        println!("[q] quit | [c] cancel operation | [:id:] choose action");
+        println!("[q] quit | [:id:] choose action");
 
         Ok(())
     }
 
     fn handle_input(&self, input: &str) -> Result<Option<Action>> {
-       
         match input {
             "q" | "Q" => Ok(Some(Action::Exit)),
             "c" | "C" => Ok(Some(Action::CancelAction)),
@@ -50,7 +47,7 @@ impl Page for HomePage {
                     match action_id {
                         1 => return Ok(Some(Action::NavigateToProjectTemplate)),
                         2 => return Ok(Some(Action::NavigateToResourceDeployment)),
-                        _ => return Ok(None)
+                        _ => return Ok(None),
                     }
                 }
                 Ok(None)
@@ -61,7 +58,6 @@ impl Page for HomePage {
     fn as_any(&self) -> &dyn Any {
         self
     }
-
 }
 
 pub struct TemplateSelection {}
@@ -71,14 +67,12 @@ impl Page for TemplateSelection {
         println!("---------------------------- TEMPLATES ---------------------------");
         println!("  id  |     programming language     |         description        ");
 
-      
         println!();
         println!();
 
         println!("[p] previous | [c] cancel operation | [:id:] select programming language");
 
         Ok(())
-
     }
 
     fn handle_input(&self, input: &str) -> Result<Option<Action>> {
@@ -88,8 +82,8 @@ impl Page for TemplateSelection {
             input => {
                 if let Ok(language_id) = input.parse::<u32>() {
                     if gen_map().contains_key(&language_id) {
-                        return Ok(Some(Action::PickProgrammingLang { 
-                            language_id: language_id 
+                        return Ok(Some(Action::PickProgrammingLang {
+                            language_id: language_id,
                         }));
                     }
                 }
@@ -101,5 +95,4 @@ impl Page for TemplateSelection {
     fn as_any(&self) -> &dyn Any {
         self
     }
-
 }
