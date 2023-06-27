@@ -29,6 +29,13 @@ impl Navigator {
                     self.pages.pop();
                 }
             },
+            Action::CancelAction => {
+                if !self.pages.is_empty() {
+                    self.pages.clear();
+                    clearscreen::clear().unwrap();
+                    self.pages.push(Box::new(HomePage {}));
+                }
+            },
             Action::Exit => {
                 self.pages.clear();
             },

@@ -6,6 +6,9 @@ use colored::Colorize;
 use std::any::Any;
 use std::fs;
 
+mod page_helpers;
+use page_helpers::*;
+
 pub trait Page {
     fn draw_page(&self) -> Result<()>;
     fn handle_input(&self, input: &str) -> Result<Option<Action>>;
@@ -25,10 +28,12 @@ impl Page for HomePage {
         println!();
         println!();
 
-        println!("-----------------------------------------------------------------------------");
-        println!(" ID |        ACTION       |                     DESCRIPTION                  ");
-        println!(" 1  | Project template    | Create a standard project template from repo.    ");
-        println!(" 2  | Resource deployment | Resources blueprints used for deployment (IaC).  ");
+        println!("---------------------------------------------------------------------------------");
+        println!("| ID |        ACTION       |                     DESCRIPTION                     |");
+        println!("---------------------------------------------------------------------------------");
+        println!("| 1  | Project template    | Create a standard project template from repo.       |");
+        println!("| 2  | Resource deployment | Create resource blueprint used for deployment (IaC).|");
+        println!("---------------------------------------------------------------------------------");
 
         println!();
         println!();
@@ -64,8 +69,27 @@ pub struct TemplateSelection {}
 
 impl Page for TemplateSelection {
     fn draw_page(&self) -> Result<()> {
+        clearscreen::clear().unwrap();
+
         println!("---------------------------- TEMPLATES ---------------------------");
-        println!("  id  |     programming language     |         description        ");
+        println!(" DESCRIPTION: Create a new project folder using the standard      ");
+        println!(" template stored on the central repository.                       ");
+        
+        println!();
+        println!();
+
+        println!("-----------------------------------");
+        println!("|  ID  |   PROGRAMMING LANGUAGE   |");
+        println!("-----------------------------------");
+
+        gen_map().iter().for_each(|(id, prog_lang)|{
+            println!(
+                "|  {i}|        {p}|",
+                i = get_column_string(&id.to_string(), 4),
+                p = get_column_string(&prog_lang.to_string(), 18)
+            )
+        });
+        println!("-----------------------------------");
 
         println!();
         println!();

@@ -1,4 +1,3 @@
-mod utils;
 mod ui;
 mod models;
 mod navigator;
@@ -50,5 +49,7 @@ fn main() {
                 }
             }
         }
+        clearscreen::clear().unwrap();
+        return
     }
 }
