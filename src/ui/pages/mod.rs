@@ -141,6 +141,9 @@ impl Page for ProjectTemplate {
 
         println!("Proceed with template creation? [y/n] ");
 
+        // Implement New project template review
+        todo!();
+
         Ok(())
 
     }
