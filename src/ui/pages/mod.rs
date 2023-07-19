@@ -1,4 +1,5 @@
 use crate::models::Action;
+use crate::templates::ProgrammingLanguages;
 use crate::templates::gen_map;
 use anyhow::anyhow;
 use anyhow::Result;
@@ -28,12 +29,12 @@ impl Page for HomePage {
         println!();
         println!();
 
-        println!("---------------------------------------------------------------------------------");
-        println!("| ID |        ACTION       |                     DESCRIPTION                     |");
-        println!("---------------------------------------------------------------------------------");
-        println!("| 1  | Project template    | Create a standard project template from repo.       |");
-        println!("| 2  | Resource deployment | Create resource blueprint used for deployment (IaC).|");
-        println!("---------------------------------------------------------------------------------");
+        println!("-----------------------------------------------------------------------------------");
+        println!("| ID |        ACTION         |                     DESCRIPTION                     |");
+        println!("-----------------------------------------------------------------------------------");
+        println!("| 1  | New project template  | Create a standard project template from repo.       |");
+        println!("| 2  | Resource deployment   | Create resource blueprint used for deployment (IaC).|");
+        println!("-----------------------------------------------------------------------------------");
 
         println!();
         println!();
@@ -72,8 +73,8 @@ impl Page for TemplateSelection {
         clearscreen::clear().unwrap();
 
         println!("---------------------------- TEMPLATES ---------------------------");
-        println!(" DESCRIPTION: Create a new project folder using the standard      ");
-        println!(" template stored on the central repository.                       ");
+        println!(" DESCRIPTION: Create a new project directory using the standard   ");
+        println!(" template stored at the central repository.                       ");
         
         println!();
         println!();
@@ -100,14 +101,16 @@ impl Page for TemplateSelection {
     }
 
     fn handle_input(&self, input: &str) -> Result<Option<Action>> {
+        let lang_map = gen_map();
+        
         match input {
             "p" | "P" => Ok(Some(Action::NavigateToPreviousPage)),
             "c" | "C" => Ok(Some(Action::CancelAction)),
             input => {
                 if let Ok(language_id) = input.parse::<u32>() {
-                    if gen_map().contains_key(&language_id) {
+                    if lang_map.contains_key(&language_id) {
                         return Ok(Some(Action::PickProgrammingLang {
-                            language_id: language_id,
+                            language: *lang_map.get(&language_id).unwrap(),
                         }));
                     }
                 }

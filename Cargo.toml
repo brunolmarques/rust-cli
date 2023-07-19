@@ -7,6 +7,6 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1"
-colored = "1"
-clearscreen = "2.0.1"
+colored = "2"
+clearscreen = "2"
 ellipse = "0.2.0"

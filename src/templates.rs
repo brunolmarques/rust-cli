@@ -1,6 +1,7 @@
 use std::{collections::BTreeMap, fmt::Display};
 
-
+// Definition of programming langagues templates
+#[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum ProgrammingLanguages {
     Rust,
     Scala,
