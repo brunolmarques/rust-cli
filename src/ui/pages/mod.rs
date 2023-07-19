@@ -1,11 +1,8 @@
-use crate::models::Action;
-use crate::templates::ProgrammingLanguages;
+use crate::models::{Action, Project};
 use crate::templates::gen_map;
-use anyhow::anyhow;
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use colored::Colorize;
-use std::any::Any;
-use std::fs;
+use std::{any::Any, fs};
 
 mod page_helpers;
 use page_helpers::*;
@@ -116,6 +113,43 @@ impl Page for TemplateSelection {
                 }
                 Ok(None)
             }
+        }
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+pub struct ProjectTemplate {
+    pub project: Project
+}
+
+impl Page for ProjectTemplate {
+    fn draw_page(&self) -> Result<()> {
+        clearscreen::clear().unwrap();
+
+        println!("---------------------- NEW PROJECT TEMPLATE ----------------------");
+        println!();
+        println!("Project Programming Language: {}", self.project.language);
+        println!("Project Name: {}", self.project.name);
+        println!("Project Description: {}", self.project.description);
+        println!("Project Owner: {}", self.project.owner);
+        
+        println!();
+        println!();
+
+        println!("Proceed with template creation? [y/n] ");
+
+        Ok(())
+
+    }
+
+    fn handle_input(&self, input: &str) -> Result<Option<Action>> {       
+        match input {
+            "y" | "Y" => Ok(Some(Action::NavigateToPreviousPage)),
+            "n" | "N" => Ok(Some(Action::NavigateToPreviousPage)),
+            input => Ok(None)
         }
     }
 

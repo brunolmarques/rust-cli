@@ -41,6 +41,8 @@ impl Navigator {
             },
             Action::PickProgrammingLang { language } => {
                 let project = (self.prompts.create_project)(language);
+                let page_view = ProjectTemplate { project };
+                self.pages.push(Box::new(page_view));
             },
             Action::Exit => {
                 self.pages.clear();
