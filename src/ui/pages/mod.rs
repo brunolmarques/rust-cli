@@ -37,6 +37,7 @@ impl Page for HomePage {
         println!();
 
         println!("[q] quit | [:id:] choose action");
+        println!();
 
         Ok(())
     }
@@ -92,7 +93,8 @@ impl Page for TemplateSelection {
         println!();
         println!();
 
-        println!("[p] previous | [c] cancel operation | [:id:] select programming language");
+        println!("| [m] main screen | [:id:] select programming language |");
+        println!();
 
         Ok(())
     }
@@ -101,8 +103,7 @@ impl Page for TemplateSelection {
         let lang_map = gen_map();
         
         match input {
-            "p" | "P" => Ok(Some(Action::NavigateToPreviousPage)),
-            "c" | "C" => Ok(Some(Action::CancelAction)),
+            "m" | "M" => Ok(Some(Action::CancelAction)),
             input => {
                 if let Ok(language_id) = input.parse::<u32>() {
                     if lang_map.contains_key(&language_id) {
@@ -129,20 +130,20 @@ impl Page for ProjectTemplate {
     fn draw_page(&self) -> Result<()> {
         clearscreen::clear().unwrap();
 
-        println!("---------------------- NEW PROJECT TEMPLATE ----------------------");
+        println!("------------------------------ NEW PROJECT ------------------------------");
         println!();
-        println!("Project Programming Language: {}", self.project.language);
-        println!("Project Name: {}", self.project.name);
-        println!("Project Description: {}", self.project.description);
-        println!("Project Owner: {}", self.project.owner);
+        println!("PROJECT LANGUAGE: {}", self.project.language);
+        println!();
+        println!("PROJECT NAME: {}", self.project.name);
+        println!("PROJECT DESCRIPTION: {}", self.project.description);
+        println!("PROJECT OWNER: {}", self.project.owner);
+        println!("PROJECT OWNER EMAIL: {}", self.project.owner_email);
         
         println!();
         println!();
 
-        println!("Proceed with template creation? [y/n] ");
-
-        // Implement New project template review
-        todo!();
+        println!("| [c] create project | [e] edit project | [p] project language screen | [m] main screen |");
+        println!();
 
         Ok(())
 
@@ -150,8 +151,10 @@ impl Page for ProjectTemplate {
 
     fn handle_input(&self, input: &str) -> Result<Option<Action>> {       
         match input {
-            "y" | "Y" => Ok(Some(Action::NavigateToPreviousPage)),
-            "n" | "N" => Ok(Some(Action::NavigateToPreviousPage)),
+            "c" | "C" => Ok(Some(Action::NavigateToProjectCreation)),
+            "p" | "P" => Ok(Some(Action::NavigateToProjectTemplate)),
+            "m" | "M" => Ok(Some(Action::CancelAction)),
+            "e" | "E" => Ok(Some(Action::EditProjectData { project: self.project.clone() })),
             input => Ok(None)
         }
     }

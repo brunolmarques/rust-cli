@@ -44,6 +44,11 @@ impl Navigator {
                 let page_view = ProjectTemplate { project };
                 self.pages.push(Box::new(page_view));
             },
+            Action::EditProjectData { project } => {
+                let project = (self.prompts.create_edit_project)(project);
+                let page_view = ProjectTemplate { project };
+                self.pages.push(Box::new(page_view));
+            },
             Action::Exit => {
                 self.pages.clear();
             },
