@@ -2,6 +2,7 @@ mod ui;
 mod models;
 mod navigator;
 mod templates;
+mod project_starter;
 
 use navigator::*;
 

@@ -1,8 +1,10 @@
-use crate::{models::Project, io_utils::get_user_input, templates::ProgrammingLanguage};
+use crate::{models::Project, io_utils::get_user_input, templates::ProgrammingLanguage, project_starter::*};
+use anyhow::{Result};
 
 pub struct Prompts {
     pub create_project: Box<dyn Fn(ProgrammingLanguage) -> Project>,
     pub create_edit_project: Box<dyn Fn(Project) -> Project>,
+    pub project_starter: Box<dyn Fn(Project) -> Result<()>>,
 }
 
 impl Prompts {
@@ -10,6 +12,7 @@ impl Prompts {
         Self {
             create_project: Box::new(create_project_prompt),
             create_edit_project: Box::new(create_edit_project_prompt),
+            project_starter: Box::new(project_starter_prompt),
         }
     }
 }
@@ -74,4 +77,18 @@ fn create_edit_project_prompt(project: Project) -> Project {
     };
 
     new_project
+}
+
+
+fn project_starter_prompt(project: Project) -> Result<()> {
+    println!("-------------------------- CREATING PROJECT ----------------------------");
+    println!();
+    println!("Creating new project for: {}", project.language);
+    
+    match project.language {
+        Rust => rust_starter(project),
+        Scala => rust_starter(project),
+        Python => rust_starter(project),
+        Java => rust_starter(project),
+    }
 }

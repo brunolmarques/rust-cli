@@ -7,7 +7,7 @@ pub enum Action {
     PickProgrammingLang { language: ProgrammingLanguage },
     EditProjectData { project: Project},
     NavigateToPreviousPage,
-    NavigateToProjectCreation,
+    ProjectCreationPage { project: Project},
     NavigateToResourceDeployment,
     CancelAction,
     Exit,

@@ -1,6 +1,6 @@
 use crate::models::{Action, Project};
 use crate::templates::gen_map;
-use anyhow::{anyhow, Result};
+use anyhow::{Result};
 use colored::Colorize;
 use std::{any::Any, fs};
 
@@ -142,7 +142,7 @@ impl Page for ProjectTemplate {
         println!();
         println!();
 
-        println!("| [c] create project | [e] edit project | [p] project language screen | [m] main screen |");
+        println!("| [c] create project | [e] edit project | [p] language selection screen | [m] main screen |");
         println!();
 
         Ok(())
@@ -151,7 +151,7 @@ impl Page for ProjectTemplate {
 
     fn handle_input(&self, input: &str) -> Result<Option<Action>> {       
         match input {
-            "c" | "C" => Ok(Some(Action::NavigateToProjectCreation)),
+            "c" | "C" => Ok(Some(Action::ProjectCreationPage { project: self.project.clone() })),
             "p" | "P" => Ok(Some(Action::NavigateToProjectTemplate)),
             "m" | "M" => Ok(Some(Action::CancelAction)),
             "e" | "E" => Ok(Some(Action::EditProjectData { project: self.project.clone() })),

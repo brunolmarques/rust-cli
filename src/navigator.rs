@@ -49,6 +49,11 @@ impl Navigator {
                 let page_view = ProjectTemplate { project };
                 self.pages.push(Box::new(page_view));
             },
+            Action::ProjectCreationPage { project } => {
+                todo!();
+                // let page_view = ProjectTemplate { project };
+                // self.pages.push(Box::new(page_view));
+            },
             Action::Exit => {
                 self.pages.clear();
             },

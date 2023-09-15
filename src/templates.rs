@@ -20,7 +20,6 @@ impl Display for ProgrammingLanguage {
     }
 }
 
-
 pub fn gen_map() -> BTreeMap<u32, ProgrammingLanguage> {
     let mut lang_map = BTreeMap::new();
     lang_map.insert(1, ProgrammingLanguage::Rust);
