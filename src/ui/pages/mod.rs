@@ -1,10 +1,8 @@
-use crate::models::Action;
+use crate::models::{Action, Project};
 use crate::templates::gen_map;
-use anyhow::anyhow;
-use anyhow::Result;
+use anyhow::{Result};
 use colored::Colorize;
-use std::any::Any;
-use std::fs;
+use std::{any::Any, fs};
 
 mod page_helpers;
 use page_helpers::*;
@@ -28,17 +26,18 @@ impl Page for HomePage {
         println!();
         println!();
 
-        println!("---------------------------------------------------------------------------------");
-        println!("| ID |        ACTION       |                     DESCRIPTION                     |");
-        println!("---------------------------------------------------------------------------------");
-        println!("| 1  | Project template    | Create a standard project template from repo.       |");
-        println!("| 2  | Resource deployment | Create resource blueprint used for deployment (IaC).|");
-        println!("---------------------------------------------------------------------------------");
+        println!("-----------------------------------------------------------------------------------");
+        println!("| ID |        ACTION         |                     DESCRIPTION                     |");
+        println!("-----------------------------------------------------------------------------------");
+        println!("| 1  | New project template  | Create a standard project template from repo.       |");
+        println!("| 2  | Resource deployment   | Create resource blueprint used for deployment (IaC).|");
+        println!("-----------------------------------------------------------------------------------");
 
         println!();
         println!();
 
         println!("[q] quit | [:id:] choose action");
+        println!();
 
         Ok(())
     }
@@ -72,8 +71,8 @@ impl Page for TemplateSelection {
         clearscreen::clear().unwrap();
 
         println!("---------------------------- TEMPLATES ---------------------------");
-        println!(" DESCRIPTION: Create a new project folder using the standard      ");
-        println!(" template stored on the central repository.                       ");
+        println!(" DESCRIPTION: Create a new project directory using the standard   ");
+        println!(" template stored at the central repository.                       ");
         
         println!();
         println!();
@@ -94,25 +93,69 @@ impl Page for TemplateSelection {
         println!();
         println!();
 
-        println!("[p] previous | [c] cancel operation | [:id:] select programming language");
+        println!("| [m] main screen | [:id:] select programming language |");
+        println!();
 
         Ok(())
     }
 
     fn handle_input(&self, input: &str) -> Result<Option<Action>> {
+        let lang_map = gen_map();
+        
         match input {
-            "p" | "P" => Ok(Some(Action::NavigateToPreviousPage)),
-            "c" | "C" => Ok(Some(Action::CancelAction)),
+            "m" | "M" => Ok(Some(Action::CancelAction)),
             input => {
                 if let Ok(language_id) = input.parse::<u32>() {
-                    if gen_map().contains_key(&language_id) {
+                    if lang_map.contains_key(&language_id) {
                         return Ok(Some(Action::PickProgrammingLang {
-                            language_id: language_id,
+                            language: *lang_map.get(&language_id).unwrap(),
                         }));
                     }
                 }
                 Ok(None)
             }
+        }
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+pub struct ProjectTemplate {
+    pub project: Project
+}
+
+impl Page for ProjectTemplate {
+    fn draw_page(&self) -> Result<()> {
+        clearscreen::clear().unwrap();
+
+        println!("------------------------------ NEW PROJECT ------------------------------");
+        println!();
+        println!("PROJECT LANGUAGE: {}", self.project.language);
+        println!();
+        println!("PROJECT NAME: {}", self.project.name);
+        println!("PROJECT DESCRIPTION: {}", self.project.description);
+        println!("PROJECT OWNER: {}", self.project.owner);
+        println!("PROJECT OWNER EMAIL: {}", self.project.owner_email);
+        
+        println!();
+        println!();
+
+        println!("| [c] create project | [e] edit project | [p] language selection screen | [m] main screen |");
+        println!();
+
+        Ok(())
+
+    }
+
+    fn handle_input(&self, input: &str) -> Result<Option<Action>> {       
+        match input {
+            "c" | "C" => Ok(Some(Action::ProjectCreationPage { project: self.project.clone() })),
+            "p" | "P" => Ok(Some(Action::NavigateToProjectTemplate)),
+            "m" | "M" => Ok(Some(Action::CancelAction)),
+            "e" | "E" => Ok(Some(Action::EditProjectData { project: self.project.clone() })),
+            input => Ok(None)
         }
     }
 
