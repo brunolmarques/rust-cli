@@ -1,4 +1,4 @@
-# Rust Command Line Interface Templace
+# Rust Command Line Interface Template
 
 This project creates a generic template for implementing a Rust CLI.
 The CLI can then be used to start new projects using standard templates, move files
